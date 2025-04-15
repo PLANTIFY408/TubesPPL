@@ -1,0 +1,305 @@
+<meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Plantify - Solusi Pertanian Modern</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#2E7D32',
+                            light: '#4CAF50',
+                            dark: '#1B5E20'
+                        },
+                        secondary: {
+                            DEFAULT: '#795548',
+                            light: '#A1887F',
+                            dark: '#5D4037'
+                        }
+                    }
+                }
+            }
+        }
+
+        // Sample data for demonstration
+        const sampleProducts = [
+            { id: 1, name: "Bibit Jagung Premium", price: 25000, type: "sale", image: "/api/placeholder/300/200", description: "Bibit jagung berkualitas tinggi, tumbuh subur dalam 14 hari." },
+            { id: 2, name: "Pupuk Organik", price: 75000, type: "sale", image: "/api/placeholder/300/200", description: "Pupuk organik 5kg, cocok untuk berbagai jenis tanaman." },
+            { id: 3, name: "Traktor Mini", price: 250000, type: "rent", rentPeriod: "per minggu", image: "/api/placeholder/300/200", description: "Traktor mini untuk lahan kecil dan menengah." },
+            { id: 4, name: "Alat Penyiram Otomatis", price: 125000, type: "rent", rentPeriod: "per bulan", image: "/api/placeholder/300/200", description: "Sistem penyiraman otomatis dengan timer dan sensor kelembapan." },
+            { id: 5, name: "Benih Sayur Paket Komplit", price: 45000, type: "sale", image: "/api/placeholder/300/200", description: "Paket benih sayuran: bayam, kangkung, sawi, dan selada." },
+            { id: 6, name: "Greenhouse Portable", price: 500000, type: "rent", rentPeriod: "per bulan", image: "/api/placeholder/300/200", description: "Greenhouse portable ukuran 3x4m, mudah dipasang dan dibongkar." }
+        ];
+
+        const sampleLand = [
+            { id: 1, name: "Lahan Kebun Utara", location: "Bogor, Jawa Barat", area: "2.5 Ha", ph: 6.8, moisture: 75 },
+            { id: 2, name: "Sawah Timur", location: "Malang, Jawa Timur", area: "1.2 Ha", ph: 7.2, moisture: 82 }
+        ];
+
+        const sampleExperts = [
+            { id: 1, name: "Dr. Ani Sutrisno", speciality: "Ahli Tanaman Pangan", image: "/api/placeholder/100/100" },
+            { id: 2, name: "Ir. Budi Santoso", speciality: "Spesialis Hidroponik", image: "/api/placeholder/100/100" },
+            { id: 3, name: "Prof. Diana Putri", speciality: "Ahli Tanah dan Pupuk", image: "/api/placeholder/100/100" }
+        ];
+
+        // Navigation functions
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.add('hidden'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.remove('hidden');
+            
+            // Close mobile menu if open
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+            
+            // Update active nav item
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                if (item.dataset.target === pageId) {
+                    item.classList.add('text-primary', 'font-bold');
+                    item.classList.remove('text-gray-600');
+                } else {
+                    item.classList.remove('text-primary', 'font-bold');
+                    item.classList.add('text-gray-600');
+                }
+            });
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        function showLoginForm() {
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('register-form').classList.add('hidden');
+        }
+
+        function showRegisterForm() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.remove('hidden');
+        }
+
+        function addNewLand() {
+            const landForm = document.getElementById('add-land-form');
+            landForm.classList.toggle('hidden');
+        }
+
+        function toggleProductFilter(type) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                if (btn.dataset.filter === type) {
+                    btn.classList.add('bg-primary', 'text-white');
+                    btn.classList.remove('bg-gray-200', 'text-gray-700');
+                } else {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                }
+            });
+
+            // Filter products
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(product => {
+                if (type === 'all' || product.dataset.type === type) {
+                    product.classList.remove('hidden');
+                } else {
+                    product.classList.add('hidden');
+                }
+            });
+        }
+
+        function simulateLogin() {
+            showPage('home-page');
+            document.getElementById('auth-buttons').classList.add('hidden');
+            document.getElementById('user-profile-btn').classList.remove('hidden');
+        }
+
+        function simulateLogout() {
+            showPage('login-page');
+            document.getElementById('auth-buttons').classList.remove('hidden');
+            document.getElementById('user-profile-btn').classList.add('hidden');
+        }
+
+        function loadProducts() {
+            const productsContainer = document.getElementById('products-container');
+            productsContainer.innerHTML = ''; // Clear existing content first
+            
+            sampleProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card bg-white rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:shadow-xl hover:-translate-y-1';
+                productCard.dataset.type = product.type;
+                
+                const badge = product.type === 'sale' ? 
+                    '<span class="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">Beli</span>' : 
+                    '<span class="absolute top-2 right-2 bg-amber-500 text-white text-xs px-2 py-1 rounded-full">Sewa</span>';
+                
+                const priceDisplay = product.type === 'rent' ? 
+                    `Rp ${product.price.toLocaleString('id-ID')} <span class="text-sm">${product.rentPeriod}</span>` : 
+                    `Rp ${product.price.toLocaleString('id-ID')}`;
+
+                
+                productCard.innerHTML = `
+                    <div class="relative">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                        ${badge}
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">${product.name}</h3>
+                        <p class="text-sm text-gray-600 mt-1">${product.description}</p>
+                        <div class="flex justify-between items-center mt-3">
+                            <span class="text-primary-dark font-bold">${priceDisplay}</span>
+                            <button class="bg-primary hover:bg-primary-dark text-white px-3 py-1 rounded-lg text-sm transition">
+                                ${product.type === 'sale' ? 'Beli' : 'Sewa'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                productsContainer.appendChild(productCard);
+            });
+        }
+        function loadLands() {
+            const landsContainer = document.getElementById('lands-container');
+            landsContainer.innerHTML = ''; // Clear existing content first
+            
+            sampleLand.forEach(land => {
+                const landCard = document.createElement('div');
+                landCard.className = 'bg-white rounded-lg overflow-hidden shadow-lg mb-4';
+                
+                landCard.innerHTML = `
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-gray-800">${land.name}</h3>
+                            <span class="text-sm text-gray-500">${land.area}</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">${land.location}</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500">pH Tanah</p>
+                                <div class="flex items-center mt-1">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${(land.ph/14)*100}%"></div>
+                                    </div>
+                                    <span class="ml-2 text-sm font-medium">${land.ph}</span>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Kelembapan</p>
+                                <div class="flex items-center mt-1">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-green-500 h-2.5 rounded-full" style="width: ${land.moisture}%"></div>
+                                    </div>
+                                    <span class="ml-2 text-sm font-medium">${land.moisture}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-end">
+                            <button class="bg-primary text-white px-3 py-1 rounded-lg text-sm mr-2">Detail</button>
+                            <button class="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm">Update</button>
+                        </div>
+                    </div>
+                `;
+                
+                landsContainer.appendChild(landCard);
+            });
+        }
+
+        function loadExperts() {
+            const expertsContainer = document.getElementById('experts-container');
+            expertsContainer.innerHTML = ''; // Clear existing content first
+            
+            sampleExperts.forEach(expert => {
+                const expertCard = document.createElement('div');
+                expertCard.className = 'bg-white rounded-lg overflow-hidden shadow p-4 flex items-center mb-4';
+                
+                expertCard.innerHTML = `
+                    <img src="${expert.image}" alt="${expert.name}" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <h3 class="font-semibold text-gray-800">${expert.name}</h3>
+                        <p class="text-sm text-gray-600">${expert.speciality}</p>
+                    </div>
+                    <button class="ml-auto bg-primary hover:bg-primary-dark text-white px-3 py-1 rounded-lg text-sm">Chat</button>
+                `;
+                
+                expertsContainer.appendChild(expertCard);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Init page
+            showPage('products-page');
+            
+            // Load data when clicking into the tabs
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetPage = this.dataset.target;
+                    
+                    if (targetPage === 'products-page') {
+                        loadProducts();
+                    } else if (targetPage === 'monitoring-page') {
+                        loadLands();
+                    } else if (targetPage === 'chat-page') {
+                        loadExperts();
+                    }
+                });
+            });
+            
+            // Pre-load data for immediate use
+            loadProducts();
+            loadLands();
+            loadExperts();
+        });
+    </script>
+    <style>
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+        }
+    </style>
+<body>   
+<!-- Products Page -->
+<div id="products-page" class="page hidden pt-24 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Produk Pertanian</h1>
+        <p class="text-gray-600 mb-8">Dapatkan produk berkualitas untuk kebutuhan pertanian Anda</p>
+        
+        <!-- Filter -->
+        <div class="mb-8">
+            <div class="flex flex-wrap gap-2">
+                <button class="filter-btn bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium" data-filter="all" onclick="toggleProductFilter('all')">Semua</button>
+                <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium" data-filter="sale" onclick="toggleProductFilter('sale')">Barang Dijual</button>
+                <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium" data-filter="rent" onclick="toggleProductFilter('rent')">Barang Disewa</button>
+            </div>
+        </div>
+        
+        <!-- Products Grid -->
+        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <!-- Products will be loaded here by JavaScript -->
+        </div>
+    </div>
+    </div>
+</body>
