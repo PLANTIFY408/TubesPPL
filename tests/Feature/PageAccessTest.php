@@ -23,4 +23,9 @@ class PageAccessTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_home_page_can_be_accessed()
+    {
+        $response = $this->get('/');
+        $response->assertStatus(200);
+    }
 }
