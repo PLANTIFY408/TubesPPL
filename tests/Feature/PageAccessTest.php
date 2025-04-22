@@ -28,7 +28,7 @@ class PageAccessTest extends TestCase
         $response = $this->get('/');
         $response->assertStatus(200);
     }
-    
+
     public function test_consultation_page_requires_authentication()
     {
         // Test akses tanpa login
@@ -47,5 +47,11 @@ class PageAccessTest extends TestCase
         $response = $this->get('/products');
         $response->assertStatus(200);
     }
-} 
+
+    public function test_login_page_can_be_accessed()
+    {
+        $response = $this->get('/login');
+        $response->assertStatus(200);
+    }
+}
 
