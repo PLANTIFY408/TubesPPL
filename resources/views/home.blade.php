@@ -9,7 +9,7 @@
             <img src="{{ asset('images/banner1.png') }}" alt="Background" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-primary opacity-60"></div>
         </div>
-        
+
         <!-- Content -->
         <div class="relative max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
             <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
@@ -31,7 +31,7 @@
             <h2 class="text-3xl font-bold text-gray-800">Fitur Unggulan Plantify</h2>
             <p class="mt-4 text-lg text-gray-600">Tingkatkan produktivitas lahan Anda dengan fitur modern</p>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Feature 1 -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
@@ -45,7 +45,7 @@
                     <i class="fas fa-arrow-right ml-2"></i>
                 </button>
             </div>
-            
+
             <!-- Feature 2 -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                 <div class="w-12 h-12 rounded-full bg-primary-light bg-opacity-20 flex items-center justify-center mb-4">
@@ -58,7 +58,7 @@
                     <i class="fas fa-arrow-right ml-2"></i>
                 </button>
             </div>
-            
+
             <!-- Feature 3 -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                 <div class="w-12 h-12 rounded-full bg-primary-light bg-opacity-20 flex items-center justify-center mb-4">
@@ -70,6 +70,76 @@
                     <span>Konsultasi Sekarang</span>
                     <i class="fas fa-arrow-right ml-2"></i>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="bg-gray-50 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-3xl font-bold text-primary">1,200+</div>
+                    <div class="mt-2 text-gray-600">Petani Aktif</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-primary">5,000+</div>
+                    <div class="mt-2 text-gray-600">Hektar Lahan</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-primary">95%</div>
+                    <div class="mt-2 text-gray-600">Kepuasan Pengguna</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-primary">24/7</div>
+                    <div class="mt-2 text-gray-600">Monitoring</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800">Testimoni Pengguna</h2>
+            <p class="mt-4 text-lg text-gray-600">Pendapat mereka yang telah menggunakan Plantify</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Testimonial 1 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center mb-4">
+                    <img src="{{ asset('images/UlasanCow1.jpg') }}" alt="User Avatar" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">Hadi Suryana</h4>
+                        <p class="text-sm text-gray-600">Petani Sayur, Bandung</p>
+                    </div>
+                </div>
+                <p class="text-gray-600">"Berkat monitoring Plantify, saya dapat mengontrol kelembapan tanah dengan tepat. Hasilnya panen sayur saya meningkat hingga 30% dari biasanya."</p>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center mb-4">
+                    <img src="{{ asset('images/UlasanCe.jpeg') }}" alt="User Avatar" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">Siti Aminah</h4>
+                        <p class="text-sm text-gray-600">Petani Buah, Malang</p>
+                    </div>
+                </div>
+                <p class="text-gray-600">"Fitur konsultasi ahli sangat membantu saya mengatasi hama pada tanaman jeruk. Sekarang pohon jeruk saya berbuah lebat dan berkualitas."</p>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center mb-4">
+                    <img src="{{ asset('images/UlasanCow2.jpg') }}" alt="User Avatar" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">Bambang Wijaya</h4>
+                        <p class="text-sm text-gray-600">Petani Padi, Surabaya</p>
+                    </div>
+                </div>
+                <p class="text-gray-600">"Aplikasi ini memudahkan saya menyewa alat pertanian tanpa harus keluar banyak modal. Sangat praktis dan biaya sewa sangat terjangkau."</p>
             </div>
         </div>
     </div>
