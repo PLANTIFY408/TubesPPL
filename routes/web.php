@@ -16,7 +16,6 @@ Route::get('/products', function () {
     return view('Product.products');
 })->name('products');
 
-
 Route::get('/login', function () {
     return view('Auth.auth', ['isRegister' => false]);
 })->name('login');
