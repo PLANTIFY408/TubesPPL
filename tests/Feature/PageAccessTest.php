@@ -53,5 +53,11 @@ class PageAccessTest extends TestCase
         $response = $this->get('/login');
         $response->assertStatus(200);
     }
+
+    public function test_register_page_can_be_accessed()
+    {
+        $response = $this->get('/register');
+        $response->assertStatus(200);
+    }
 }
 
