@@ -39,12 +39,12 @@
         .gradient-bg {
             background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
         }
-        
+
         /* Pastikan halaman login/register memenuhi tinggi layar */
         #login-page {
             min-height: 100vh;
         }
-        
+
         /* Pastikan konten utama memiliki tinggi minimum */
         .content-wrapper {
             min-height: calc(100vh - 64px); /* 64px adalah tinggi navbar */
@@ -53,9 +53,9 @@
 </head>
 <body class="bg-gray-100 font-sans">
     <div class="flex flex-col min-h-screen">
-        <!-- Navbar -->
+        <!-- Navbar Ribka -->
         <nav class="bg-white w-full z-10">
-            <div class="max-w-7xl mx-auto px-4">    
+            <div class="max-w-7xl mx-auto px-4">
                 <div class="flex justify-between h-16">
                     <div class="flex items-center">
                         <div class="flex-shrink-0 flex items-center">
@@ -124,7 +124,7 @@
             <div class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
-                        <div class="flex items-center mb-4">   
+                        <div class="flex items-center mb-4">
                             <i class="fas fa-leaf text-primary-light text-2xl mr-2"></i>
                             <span class="text-xl font-bold">Plantify</span>
                         </div>
@@ -144,7 +144,7 @@
                             </a>
                         </div>
                     </div>
-                    
+
                     <div>
                         <h3 class="text-lg font-semibold mb-4">Fitur</h3>
                         <ul class="space-y-2">
@@ -154,7 +154,7 @@
                             <li><a href="#" class="text-gray-400 hover:text-white">Laporan & Analisis</a></li>
                         </ul>
                     </div>
-                    
+
                     <div>
                         <h3 class="text-lg font-semibold mb-4">Perusahaan</h3>
                         <ul class="space-y-2">
@@ -164,7 +164,7 @@
                             <li><a href="#" class="text-gray-400 hover:text-white">Kontak</a></li>
                         </ul>
                     </div>
-                    
+
                     <div>
                         <h3 class="text-lg font-semibold mb-4">Bantuan</h3>
                         <ul class="space-y-2">
@@ -175,7 +175,7 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
                     <p class="text-gray-400">&copy; 2025 Plantify. Hak Cipta Dilindungi.</p>
                     <div class="mt-4 md:mt-0">
