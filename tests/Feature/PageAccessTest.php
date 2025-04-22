@@ -28,4 +28,18 @@ class PageAccessTest extends TestCase
         $response = $this->get('/');
         $response->assertStatus(200);
     }
-}
+    
+    public function test_consultation_page_requires_authentication()
+    {
+        // Test akses tanpa login
+        $response = $this->get('/consultation');
+        $response->assertStatus(302);
+        $response->assertRedirect('/login');
+
+        // Test akses dengan login
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/consultation');
+        $response->assertStatus(200);
+    }
+} 
+
