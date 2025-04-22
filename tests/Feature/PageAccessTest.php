@@ -41,5 +41,11 @@ class PageAccessTest extends TestCase
         $response = $this->actingAs($user)->get('/consultation');
         $response->assertStatus(200);
     }
+
+    public function test_products_page_can_be_accessed()
+    {
+        $response = $this->get('/products');
+        $response->assertStatus(200);
+    }
 } 
 
