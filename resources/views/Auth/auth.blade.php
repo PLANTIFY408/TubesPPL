@@ -47,9 +47,7 @@
 
         <div class="bg-white shadow-lg rounded-lg overflow-hidden">
             <div class="gradient-bg px-6 py-8 text-white text-center">
-                <i class="fas fa-leaf text-4xl mb-2"></i>
-                <h1 class="text-2xl font-bold">Plantify</h1>
-                <p class="text-green-100">Solusi Pertanian Modern</p>
+                <img src="{{ asset('images/plantify_slogan.png') }}" alt="Plantify Logo" class="mx-auto h-24">
             </div>
             
             <!-- Login Form -->
