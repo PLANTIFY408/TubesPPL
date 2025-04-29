@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plantify - Solusi Pertanian Modern</title>
+    <link rel="website icon" type="png" href="{{ asset('images/plantify_icon.png') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -59,8 +60,7 @@
                 <div class="flex justify-between h-16">
                     <div class="flex items-center">
                         <div class="flex-shrink-0 flex items-center">
-                            <i class="fas fa-leaf text-primary text-2xl mr-2"></i>
-                            <span class="text-xl font-bold text-primary">Plantify</span>
+                            <img src="{{ asset('images/plantify_logo-shadow.png') }}" alt="Plantify Logo" class="h-8">
                         </div>
                         <div class="hidden md:ml-6 md:flex md:space-x-8">
                             <a href="{{ route('home') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="home-page">Beranda</a>
