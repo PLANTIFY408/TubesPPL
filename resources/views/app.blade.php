@@ -80,10 +80,10 @@
                         @else
                             <div id="user-profile-btn" class="flex items-center space-x-4">
                                 <div class="relative">
-                                    <button onclick="showPage('profile-page')" class="flex items-center focus:outline-none">
-                                        <img class="h-8 w-8 rounded-full border-2 border-primary" src="/api/placeholder/100/100" alt="Profile">
+                                    <a href="{{ route('profile') }}" class="flex items-center focus:outline-none">
+                                        <img class="h-8 w-8 rounded-full border-2 border-primary" src="{{ Auth::user()->profile_photo_url ?? '/api/placeholder/100/100' }}" alt="Profile">
                                         <span class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">{{ Auth::user()->name }}</span>
-                                    </button>
+                                    </a>
                                 </div>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf

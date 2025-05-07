@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('Auth.auth');
@@ -36,9 +37,7 @@ Route::middleware(['auth'])->group(function () {
         return view('Consultation.consultation');
     })->name('consultation');
     
-    Route::get('/profile', function () {
-        return view('profile');
-    })->name('profile');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
