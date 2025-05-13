@@ -9,7 +9,7 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('sensor:generate-dummy')->everyFiveSeconds();
+        $schedule->command('sensor:generate-dummy')->everySecond();
     }
 
     protected function commands()

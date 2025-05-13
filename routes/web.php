@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('consultation');
     
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
