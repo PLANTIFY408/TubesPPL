@@ -4,10 +4,27 @@
 <!-- Home Page -->
 <div id="home-page" class="page min-h-screen">
     <div class="relative">
-        <!-- Background Image -->
+        <!-- Background Image Carousel -->
         <div class="absolute inset-0">
-            <img src="{{ asset('images/banner1.png') }}" alt="Background" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-primary opacity-60"></div>
+            <div class="banner-carousel relative w-full h-full">
+                <div class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                    <img src="{{ asset('images/banner1.png') }}" alt="Background 1" class="w-full h-full object-cover">
+                </div>
+                <div class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                    <img src="{{ asset('images/banner2.png') }}" alt="Background 2" class="w-full h-full object-cover">
+                </div>
+                <div class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                    <img src="{{ asset('images/banner3.png') }}" alt="Background 3" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute inset-0 bg-primary opacity-60"></div>
+            </div>
+            
+            <!-- Navigation Dots -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+                <button class="carousel-dot w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity"></button>
+                <button class="carousel-dot w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity"></button>
+                <button class="carousel-dot w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity"></button>
+            </div>
         </div>
 
         <!-- Content -->
@@ -144,4 +161,43 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.carousel-dot');
+    let currentSlide = 0;
+    
+    // Show first slide initially
+    slides[0].classList.add('opacity-100');
+    dots[0].classList.add('opacity-100');
+    
+    function showSlide(index) {
+        // Hide all slides
+        slides.forEach(slide => slide.classList.remove('opacity-100'));
+        dots.forEach(dot => dot.classList.remove('opacity-100'));
+        
+        // Show selected slide
+        slides[index].classList.add('opacity-100');
+        dots[index].classList.add('opacity-100');
+        
+        currentSlide = index;
+    }
+    
+    // Add click events to dots
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => showSlide(index));
+    });
+    
+    // Auto advance slides
+    function nextSlide() {
+        let next = currentSlide + 1;
+        if (next >= slides.length) next = 0;
+        showSlide(next);
+    }
+    
+    // Change slide every 5 seconds
+    setInterval(nextSlide, 5000);
+});
+</script>
 @endsection
