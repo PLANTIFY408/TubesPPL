@@ -125,8 +125,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
                         <div class="flex items-center mb-4">
-                            <i class="fas fa-leaf text-primary-light text-2xl mr-2"></i>
-                            <span class="text-xl font-bold">Plantify</span>
+                            <img src="{{ asset('images/plantify_footer.png') }}" alt="Plantify Logo" class="h-8">
                         </div>
                         <p class="text-gray-400 mb-4">Solusi pertanian modern untuk hasil panen optimal.</p>
                         <div class="flex space-x-4">
