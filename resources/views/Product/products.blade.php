@@ -2,21 +2,15 @@
 
 @section('scripts')
 <script>
-    // Data produk
-    window.sampleProducts = [
-        { id: 1, name: "Bibit Jagung Premium", price: 25000, type: "sale", image: "/api/placeholder/300/200", description: "Bibit jagung berkualitas tinggi, tumbuh subur dalam 14 hari." },
-        { id: 2, name: "Pupuk Organik", price: 75000, type: "sale", image: "/api/placeholder/300/200", description: "Pupuk organik 5kg, cocok untuk berbagai jenis tanaman." },
-        { id: 3, name: "Traktor Mini", price: 250000, type: "rent", rentPeriod: "per minggu", image: "/api/placeholder/300/200", description: "Traktor mini untuk lahan kecil dan menengah." },
-        { id: 4, name: "Alat Penyiram Otomatis", price: 125000, type: "rent", rentPeriod: "per bulan", image: "/api/placeholder/300/200", description: "Sistem penyiraman otomatis dengan timer dan sensor kelembapan." },
-        { id: 5, name: "Benih Sayur Paket Komplit", price: 45000, type: "sale", image: "/api/placeholder/300/200", description: "Paket benih sayuran: bayam, kangkung, sawi, dan selada." },
-        { id: 6, name: "Greenhouse Portable", price: 500000, type: "rent", rentPeriod: "per bulan", image: "/api/placeholder/300/200", description: "Greenhouse portable ukuran 3x4m, mudah dipasang dan dibongkar." }
-    ];
+    // Fungsi untuk menangani aksi produk (beli/sewa)
+    function handleProductAction(productId, type) {
+        console.log(`Handling ${type} action for product ${productId}`);
+    }
 
     // Fungsi filter
-    window.toggleProductFilter = function(type) {
-        console.log('Filtering products:', type); // Debug log
-        const buttons = document.querySelectorAll('.filter-btn');
-        buttons.forEach(btn => {
+    function toggleProductFilter(type) {
+        // Update tampilan button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
             if (btn.dataset.filter === type) {
                 btn.classList.add('bg-primary', 'text-white');
                 btn.classList.remove('bg-gray-200', 'text-gray-700');
@@ -26,80 +20,82 @@
             }
         });
 
-        const products = document.querySelectorAll('.product-card');
-        products.forEach(product => {
-            if (type === 'all' || product.dataset.type === type) {
-                product.classList.remove('hidden');
-            } else {
-                product.classList.add('hidden');
-            }
-        });
-    }
-
-    // Fungsi untuk memuat produk
-    function loadProducts() {
-        console.log('Loading products...'); // Debug log
-        const productsContainer = document.getElementById('products-container');
-        if (!productsContainer) {
-            console.error('Products container not found!'); // Debug log
-            return;
+        // Update URL
+        const url = new URL(window.location);
+        if (type === 'all') {
+            url.searchParams.delete('type');
+        } else {
+            url.searchParams.set('type', type);
         }
-        
-        productsContainer.innerHTML = ''; // Clear existing content
-        
-        window.sampleProducts.forEach(product => {
-            console.log('Adding product:', product.name); // Debug log
-            const productCard = document.createElement('div');
-            productCard.className = 'product-card bg-white rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:shadow-xl hover:-translate-y-1';
-            productCard.dataset.type = product.type;
-            
-            const badge = product.type === 'sale' ? 
-                '<span class="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">Beli</span>' : 
-                '<span class="absolute top-2 right-2 bg-amber-500 text-white text-xs px-2 py-1 rounded-full">Sewa</span>';
-            
-            const priceDisplay = product.type === 'rent' ? 
-                `Rp ${product.price.toLocaleString('id-ID')} <span class="text-sm">${product.rentPeriod}</span>` : 
-                `Rp ${product.price.toLocaleString('id-ID')}`;
-            
-            productCard.innerHTML = `
-                <div class="relative">
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
-                    ${badge}
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold text-gray-800">${product.name}</h3>
-                    <p class="text-sm text-gray-600 mt-1">${product.description}</p>
-                    <div class="flex justify-between items-center mt-3">
-                        <span class="text-primary-dark font-bold">${priceDisplay}</span>
-                        <button class="bg-primary hover:bg-primary-dark text-white px-3 py-1 rounded-lg text-sm transition">
-                            ${product.type === 'sale' ? 'Beli' : 'Sewa'}
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            productsContainer.appendChild(productCard);
-        });
-        console.log('Products loaded successfully!'); // Debug log
+        window.location.href = url.toString();
     }
 
-    // Event listener untuk memuat produk
+    // Event listener untuk pencarian
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Products page DOM Content Loaded'); // Debug log
-        loadProducts(); // Load products immediately
-    });
+        const searchForm = document.getElementById('search-form');
+        const searchInput = document.getElementById('search-input');
+        const clearSearchBtn = document.getElementById('clear-search');
 
-    // Event listener untuk showPage
-    if (typeof showPage === 'function') {
-        const originalShowPage = showPage;
-        showPage = function(pageId) {
-            originalShowPage(pageId);
-            if (pageId === 'products-page') {
-                console.log('Products page shown, loading products...'); // Debug log
-                loadProducts();
+        // Fungsi untuk melakukan pencarian
+        function performSearch() {
+            console.log('Performing search with:', searchInput.value); // Debug log
+            const url = new URL(window.location);
+            const searchTerm = searchInput.value.trim();
+            
+            if (searchTerm) {
+                url.searchParams.set('search', searchTerm);
+            } else {
+                url.searchParams.delete('search');
             }
-        };
-    }
+            
+            console.log('Redirecting to:', url.toString()); // Debug log
+            window.location.href = url.toString();
+        }
+
+        // Event listener untuk form submit
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('Form submitted'); // Debug log
+            performSearch();
+        });
+
+        // Event listener untuk input pencarian
+        let searchTimeout;
+        searchInput.addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performSearch, 500);
+        });
+
+        // Event listener untuk tombol clear
+        if (clearSearchBtn) {
+            clearSearchBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                performSearch();
+            });
+        }
+
+        // Event listener untuk sorting
+        document.getElementById('sort-select').addEventListener('change', function(e) {
+            const [sort, order] = e.target.value.split('-');
+            const url = new URL(window.location);
+            url.searchParams.set('sort', sort);
+            url.searchParams.set('order', order);
+            window.location.href = url.toString();
+        });
+
+        // Set filter button state berdasarkan URL
+        const url = new URL(window.location);
+        const type = url.searchParams.get('type') || 'all';
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            if (btn.dataset.filter === type) {
+                btn.classList.add('bg-primary', 'text-white');
+                btn.classList.remove('bg-gray-200', 'text-gray-700');
+            } else {
+                btn.classList.remove('bg-primary', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            }
+        });
+    });
 </script>
 @endsection
 
@@ -109,18 +105,53 @@
         <h1 class="text-3xl font-bold text-gray-800 mb-2">Produk Pertanian</h1>
         <p class="text-gray-600 mb-8">Dapatkan produk berkualitas untuk kebutuhan pertanian Anda</p>
         
+        <!-- Search and Sort -->
+        <div class="mb-8 flex flex-wrap gap-4 items-center">
+            <form id="search-form" method="GET" action="/products" class="flex-1 flex gap-2">
+                <div class="flex-1 relative">
+                    <input type="text" 
+                           id="search-input" 
+                           name="search"
+                           placeholder="Cari produk..." 
+                           value="{{ request('search') }}" 
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary">
+                    @if(request('search'))
+                        <button type="button" 
+                                id="clear-search"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    @endif
+                </div>
+                <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
+                    Cari
+                </button>
+            </form>
+            <div class="w-48">
+                <select id="sort-select" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary">
+                    <option value="created_at-desc" {{ request('sort') == 'created_at' && request('order') == 'desc' ? 'selected' : '' }}>Terbaru</option>
+                    <option value="price-asc" {{ request('sort') == 'price' && request('order') == 'asc' ? 'selected' : '' }}>Harga: Rendah ke Tinggi</option>
+                    <option value="price-desc" {{ request('sort') == 'price' && request('order') == 'desc' ? 'selected' : '' }}>Harga: Tinggi ke Rendah</option>
+                    <option value="name-asc" {{ request('sort') == 'name' && request('order') == 'asc' ? 'selected' : '' }}>Nama: A-Z</option>
+                    <option value="name-desc" {{ request('sort') == 'name' && request('order') == 'desc' ? 'selected' : '' }}>Nama: Z-A</option>
+                </select>
+            </div>
+        </div>
+        
         <!-- Filter -->
         <div class="mb-8">
             <div class="flex flex-wrap gap-2">
-                <button class="filter-btn bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium" data-filter="all" onclick="toggleProductFilter('all')">Semua</button>
-                <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium" data-filter="sale" onclick="toggleProductFilter('sale')">Barang Dijual</button>
-                <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium" data-filter="rent" onclick="toggleProductFilter('rent')">Barang Disewa</button>
+                <button class="filter-btn {{ !request('type') || request('type') == 'all' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700' }} px-4 py-2 rounded-lg text-sm font-medium" data-filter="all" onclick="toggleProductFilter('all')">Semua</button>
+                <button class="filter-btn {{ request('type') == 'sale' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700' }} px-4 py-2 rounded-lg text-sm font-medium" data-filter="sale" onclick="toggleProductFilter('sale')">Barang Dijual</button>
+                <button class="filter-btn {{ request('type') == 'rent' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700' }} px-4 py-2 rounded-lg text-sm font-medium" data-filter="rent" onclick="toggleProductFilter('rent')">Barang Disewa</button>
             </div>
         </div>
         
         <!-- Products Grid -->
-        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Products will be loaded here by JavaScript -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @include('Product._product_grid')
         </div>
     </div>
 </div>

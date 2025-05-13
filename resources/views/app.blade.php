@@ -64,7 +64,7 @@
                         </div>
                         <div class="hidden md:ml-6 md:flex md:space-x-8">
                             <a href="{{ route('home') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="home-page">Beranda</a>
-                            <a href="{{ route('products') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="products-page">Produk</a>
+                            <a href="{{ route('products.index') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="products-page">Produk</a>
                             @auth
                                 <a href="{{ route('monitoring') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="monitoring-page">Monitoring</a>
                                 <a href="{{ route('consultation') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="consultation-page">Konsultasi</a>
@@ -104,7 +104,7 @@
             <div id="mobile-menu" class="md:hidden hidden animate-fade-in">
                 <div class="px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg">
                     <a href="{{ route('home') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Beranda</a>
-                    <a href="{{ route('products') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Produk</a>
+                    <a href="{{ route('products.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Produk</a>
                     @auth
                         <a href="{{ route('monitoring') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Monitoring</a>
                         <a href="{{ route('consultation') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium" >Konsultasi</a>

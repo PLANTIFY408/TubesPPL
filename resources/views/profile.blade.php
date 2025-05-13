@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-<div id="profile-page" class="page pt-24 min-h-screen">
+<div id="profile-page" class="page pt-20 min-h-screen pb-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
                 <div class="relative h-48 bg-primary">
