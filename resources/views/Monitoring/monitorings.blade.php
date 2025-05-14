@@ -125,7 +125,6 @@
     }
 
     function updateLand(landId) {
-        console.log('Manual update requested for land:', landId);
         fetch(`/lands/${landId}/latest-data`)
             .then(response => {
                 if (!response.ok) {
@@ -231,7 +230,6 @@
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Initializing monitoring page');
         loadLands();
         
         // Update data setiap 3 detik
