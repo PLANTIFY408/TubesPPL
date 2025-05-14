@@ -23,7 +23,7 @@
             <div class="relative h-48 bg-primary">
                 <div class="absolute -bottom-16 left-8">
                     <div class="w-32 h-32 rounded-full border-4 border-white overflow-hidden">
-                        <img src="{{ $user->profile_photo_path ? asset('storage/' . $user->profile_photo_path) : asset('images/no-image.png') }}" 
+                        <img src="{{ asset('/storage/' . ($user->profile_photo_path ?? 'no-image.png')) }}" 
                              alt="Profile" 
                              class="w-full h-full object-cover">
                     </div>
@@ -138,7 +138,7 @@
 
 <!-- Edit Profile Modal -->
 <div id="edit-profile-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
-    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+    <div class="relative top-20 mx-auto p-5 border w-96 rounded-md bg-white">
         <div class="mt-3">
             <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Edit Profil</h3>
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
@@ -148,58 +148,57 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Nama</label>
                     <input type="text" name="name" id="name" value="{{ $user->name }}" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                           class="border rounded w-full py-2 px-3 text-gray-700 leading-tight">
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
                     <input type="email" name="email" id="email" value="{{ $user->email }}" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                           class="border rounded w-full py-2 px-3 text-gray-700 leading-tight">
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">No. Telepon</label>
                     <input type="text" name="phone" id="phone" value="{{ $user->phone }}" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                           class="border rounded w-full py-2 px-3 text-gray-700 leading-tight">
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="address">Alamat</label>
                     <textarea name="address" id="address" 
-                              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ $user->address }}</textarea>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="profile_photo">Foto Profil</label>
-                    <input type="file" name="profile_photo" id="profile_photo" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                              class="border rounded w-full py-2 px-3 text-gray-700 leading-tight">{{ $user->address }}</textarea>
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="current_password">Password Saat Ini</label>
                     <input type="password" name="current_password" id="current_password" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                           class="border rounded w-full py-2 px-3 text-gray-700 leading-tight ">
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="new_password">Password Baru</label>
                     <input type="password" name="new_password" id="new_password" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                           class="border rounded w-full py-2 px-3 text-gray-700 leading-tight">
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="new_password_confirmation">Konfirmasi Password Baru</label>
                     <input type="password" name="new_password_confirmation" id="new_password_confirmation" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                           class="border rounded w-full py-2 px-3 text-gray-700 leading-tight">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="profile_photo">Foto Profil</label>
+                    <input type="file" name="profile_photo" id="profile_photo" accept="image/*" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight">
                 </div>
 
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeEditModal()" 
-                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline">
                         Batal
                     </button>
                     <button type="submit" 
-                            class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline">
                         Simpan
                     </button>
                 </div>
