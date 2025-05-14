@@ -4,6 +4,13 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Inisialisasi Pusher
+    const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
+        cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}'
+    });
+
+    // Subscribe ke channel monitoring
+    const channel = pusher.subscribe('monitoring');
 
     // Data untuk chart
     let phChart, moistureChart, tempChart, humidityChart;
@@ -206,7 +213,7 @@
         loadHistoricalData();
         
         // Update data setiap 3 detik
-        setInterval(updateLatestData, 3000);
+        setInterval(updateLatestData, 3600000);
     });
 </script>
 @endsection

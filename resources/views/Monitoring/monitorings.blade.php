@@ -231,7 +231,6 @@
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
         loadLands();
-        
         // Update data setiap 3 detik
         setInterval(updateAllLands, 3600000);
     });
