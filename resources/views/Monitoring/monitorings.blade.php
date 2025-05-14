@@ -224,7 +224,7 @@
         landsData.forEach(land => {
             setTimeout(() => {
                 updateLand(land.id);
-            }, Math.random() * 1000); // Tambah delay random untuk menghindari request bersamaan
+            }, Math.random() * 1000); 
         });
     }
 
@@ -233,7 +233,7 @@
         loadLands();
         
         // Update data setiap 3 detik
-        setInterval(updateAllLands, 3000);
+        setInterval(updateAllLands, 3600000);
     });
 </script>
 @endsection
