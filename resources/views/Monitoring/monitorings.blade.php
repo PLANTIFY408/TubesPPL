@@ -35,7 +35,6 @@
     }
 
     function updateLandValues(landId, data) {
-        console.log('Updating land values:', landId, data);
         const card = document.querySelector(`[data-land-id="${landId}"]`);
         if (!card) {
             console.error('Card not found for land:', landId);
@@ -56,7 +55,6 @@
         const currentPh = parseFloat(phValue.textContent);
         const newPh = parseFloat(data.ph_value);
         if (!isNaN(currentPh) && !isNaN(newPh)) {
-            console.log('Updating pH:', currentPh, '->', newPh);
             animateValue(phValue, currentPh, newPh, 1000);
             animateProgressBar(phBar, (currentPh/14)*100, (newPh/14)*100, 1000);
         }
@@ -65,7 +63,6 @@
         const currentMoisture = parseInt(moistureValue.textContent);
         const newMoisture = parseInt(data.moisture_value);
         if (!isNaN(currentMoisture) && !isNaN(newMoisture)) {
-            console.log('Updating moisture:', currentMoisture, '->', newMoisture);
             animateValue(moistureValue, currentMoisture, newMoisture, 1000);
             animateProgressBar(moistureBar, currentMoisture, newMoisture, 1000);
         }
@@ -225,7 +222,6 @@
 
     // Fungsi untuk update semua lahan
     function updateAllLands() {
-        console.log('Updating all lands...');
         landsData.forEach(land => {
             setTimeout(() => {
                 updateLand(land.id);
