@@ -123,11 +123,14 @@
         // Update Humidity Chart
         updateChart(humidityChart, timestamp, data.humidity);
 
-        // Update current values
-        document.getElementById('currentPh').textContent = data.ph_value.toFixed(1);
-        document.getElementById('currentMoisture').textContent = data.moisture_value + '%';
-        document.getElementById('currentTemp').textContent = data.temperature + '°C';
-        document.getElementById('currentHumidity').textContent = data.humidity + '%';
+        // Update current values dengan animasi
+        animateValue('currentPh', data.ph_value.toFixed(1));
+        animateValue('currentMoisture', data.moisture_value + '%');
+        animateValue('currentTemp', data.temperature + '°C');
+        animateValue('currentHumidity', data.humidity + '%');
+
+        // Update last update time
+        document.getElementById('lastUpdate').textContent = 'Baru saja diperbarui';
     }
 
     function updateChart(chart, label, value) {
@@ -140,6 +143,38 @@
         }
 
         chart.update();
+    }
+
+    function animateValue(elementId, newValue) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        const currentValue = parseFloat(element.textContent);
+        const targetValue = parseFloat(newValue);
+        
+        if (isNaN(currentValue) || isNaN(targetValue)) {
+            element.textContent = newValue;
+            return;
+        }
+
+        const duration = 1000;
+        const startTime = performance.now();
+        
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            const current = currentValue + (targetValue - currentValue) * progress;
+            element.textContent = typeof targetValue === 'number' ? current.toFixed(1) : Math.round(current);
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                element.textContent = newValue;
+            }
+        }
+        
+        requestAnimationFrame(update);
     }
 
     function loadHistoricalData() {
@@ -155,6 +190,17 @@
             .catch(error => console.error('Error:', error));
     }
 
+    function updateLatestData() {
+        fetch(`/lands/{{ $land->id }}/latest-data`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateCharts(data.data);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
     // Listen untuk event sensor update
     channel.bind('sensor-update', function(data) {
         if (data.land_id === {{ $land->id }}) {
@@ -165,6 +211,9 @@
     document.addEventListener('DOMContentLoaded', function() {
         initCharts();
         loadHistoricalData();
+        
+        // Update data setiap 3 detik
+        setInterval(updateLatestData, 3000);
     });
 </script>
 @endsection
@@ -179,10 +228,13 @@
                     <h1 class="text-3xl font-bold text-gray-800">{{ $land->name }}</h1>
                     <p class="text-gray-600">{{ $land->location }}</p>
                 </div>
-                <a href="{{ route('monitoring') }}" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg flex items-center transition-colors">
-                    <i class="fas fa-arrow-left mr-2"></i>
-                    <span>Kembali</span>
-                </a>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-500" id="lastUpdate">Memperbarui data...</span>
+                    <a href="{{ route('monitoring') }}" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg flex items-center transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        <span>Kembali</span>
+                    </a>
+                </div>
             </div>
             <div class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="bg-white p-4 rounded-lg shadow">
@@ -199,7 +251,7 @@
                 </div>
                 <div class="bg-white p-4 rounded-lg shadow">
                     <h3 class="text-sm font-medium text-gray-500">Update Terakhir</h3>
-                    <p class="text-2xl font-semibold text-gray-800">{{ $land->sensorData->first()?->created_at->diffForHumans() ?? 'Belum ada data' }}</p>
+                    <p class="text-2xl font-semibold text-gray-800" id="lastUpdate">{{ $land->sensorData->first()?->created_at->diffForHumans() ?? 'Belum ada data' }}</p>
                 </div>
             </div>
         </div>

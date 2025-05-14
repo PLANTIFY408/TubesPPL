@@ -7,6 +7,7 @@ use App\Models\SensorData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class LandController extends Controller
 {
@@ -32,7 +33,7 @@ class LandController extends Controller
      */
     public function create()
     {
-        //
+        return view('Monitoring.create');
     }
 
     /**
@@ -40,6 +41,7 @@ class LandController extends Controller
      */
     public function store(Request $request)
     {
+        \Log::info('Masuk ke method store LandController');
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
@@ -49,11 +51,32 @@ class LandController extends Controller
 
         $land = Auth::user()->lands()->create($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Lahan berhasil ditambahkan',
-            'data' => $land
-        ]);
+        // Tambahkan log sebelum insert
+        Log::info('Akan insert sensor data', ['land_id' => $land->id]);
+
+        try {
+            SensorData::create([
+                'land_id' => $land->id,
+                'ph_value' => rand(55, 75) / 10, // 5.5 - 7.5
+                'moisture_value' => rand(600, 900) / 10, // 60 - 90
+                'temperature' => rand(250, 350) / 10, // 25 - 35
+                'humidity' => rand(500, 900) / 10, // 50 - 90
+                'timestamp' => now(),
+            ]);
+            Log::info('Insert sensor data berhasil', ['land_id' => $land->id]);
+        } catch (\Exception $e) {
+            Log::error('Insert sensor data gagal', ['error' => $e->getMessage()]);
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Lahan berhasil ditambahkan',
+                'data' => $land
+            ]);
+        }
+
+        return redirect()->route('monitoring')->with('success', 'Lahan berhasil ditambahkan');
     }
 
     /**
@@ -120,18 +143,28 @@ class LandController extends Controller
     {
         $this->authorize('view', $land);
 
-        $latestData = $land->sensorData()->latest()->first();
+        // Generate data baru setiap kali dipanggil
+        $data = [
+            'ph_value' => rand(55, 75) / 10, // 5.5 - 7.5
+            'moisture_value' => rand(600, 900) / 10, // 60 - 90
+            'temperature' => rand(250, 350) / 10, // 25 - 35
+            'humidity' => rand(500, 900) / 10, // 50 - 90
+            'timestamp' => now(),
+        ];
 
-        if (!$latestData) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Belum ada data sensor'
-            ], 404);
-        }
+        // Simpan data baru ke database
+        $sensorData = SensorData::create([
+            'land_id' => $land->id,
+            'ph_value' => $data['ph_value'],
+            'moisture_value' => $data['moisture_value'],
+            'temperature' => $data['temperature'],
+            'humidity' => $data['humidity'],
+            'timestamp' => $data['timestamp'],
+        ]);
 
         return response()->json([
             'success' => true,
-            'data' => $latestData
+            'data' => $data
         ]);
     }
 
