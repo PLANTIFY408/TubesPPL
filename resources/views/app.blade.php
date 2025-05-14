@@ -83,7 +83,7 @@
                             <div id="user-profile-btn" class="flex items-center space-x-4">
                                 <div class="relative">
                                     <a href="{{ route('profile') }}" class="flex items-center focus:outline-none">
-                                        <img class="h-8 w-8 rounded-full border-2 border-primary" src="{{ asset('/storage/' . ($user->profile_photo_path ?? 'no-image.png')) }}" alt="Profile">
+                                        <img class="h-8 w-8 rounded-full border-2 border-primary" src="{{ asset('storage/' . (Auth::user()->profile_photo_path ?? 'no-image.png')) }}" alt="Profile">
                                         <span class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">{{ Auth::user()->name }}</span>
                                     </a>
                                 </div>

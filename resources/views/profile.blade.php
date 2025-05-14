@@ -23,7 +23,7 @@
             <div class="relative h-48 bg-primary">
                 <div class="absolute -bottom-16 left-8">
                     <div class="w-32 h-32 rounded-full border-4 border-white overflow-hidden">
-                        <img src="{{ asset('/storage/' . ($user->profile_photo_path ?? 'no-image.png')) }}" 
+                        <img src="{{ asset('storage/' . ($user->profile_photo_path ?? 'no-image.png')) }}" 
                              alt="Profile" 
                              class="w-full h-full object-cover">
                     </div>
