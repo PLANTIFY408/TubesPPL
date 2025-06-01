@@ -4,7 +4,128 @@
 <script>
     // Fungsi untuk menangani aksi produk (beli/sewa)
     function handleProductAction(productId, type) {
-        console.log(`Handling ${type} action for product ${productId}`);
+        // Cek apakah user sudah login
+        @guest
+            Swal.fire({
+                title: 'Login Diperlukan',
+                html: `
+                    <div class="text-center">
+                        <div class="mb-4">
+                            <i class="fas fa-user-lock text-5xl text-primary"></i>
+                        </div>
+                        <p class="text-gray-600 mb-4">Anda harus login terlebih dahulu untuk melanjutkan</p>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Login',
+                cancelButtonText: 'Daftar',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#2E7D32'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '{{ route('login') }}';
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    window.location.href = '{{ route('register') }}';
+                }
+            });
+            return;
+        @endguest
+
+        // Tampilkan popup untuk input quantity menggunakan SweetAlert2
+        Swal.fire({
+            title: 'Masukkan Jumlah',
+            input: 'number',
+            inputLabel: 'Jumlah yang ingin dibeli',
+            inputAttributes: {
+                min: 1,
+                step: 1
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Lanjutkan',
+            cancelButtonText: 'Batal',
+            showLoaderOnConfirm: true,
+            preConfirm: (quantity) => {
+                if (!quantity || quantity < 1) {
+                    Swal.showValidationMessage('Mohon masukkan jumlah yang valid');
+                    return false;
+                }
+                return quantity;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const quantity = result.value;
+                
+                // Jika tipe sewa, tampilkan popup untuk periode sewa
+                if (type === 'rent') {
+                    Swal.fire({
+                        title: 'Periode Sewa',
+                        input: 'text',
+                        inputLabel: 'Masukkan periode sewa (contoh: 1 bulan)',
+                        showCancelButton: true,
+                        confirmButtonText: 'Lanjutkan',
+                        cancelButtonText: 'Batal',
+                        showLoaderOnConfirm: true,
+                        preConfirm: (rentPeriod) => {
+                            if (!rentPeriod) {
+                                Swal.showValidationMessage('Mohon masukkan periode sewa');
+                                return false;
+                            }
+                            return rentPeriod;
+                        }
+                    }).then((rentResult) => {
+                        if (rentResult.isConfirmed) {
+                            addToCart(productId, quantity, type, rentResult.value);
+                        }
+                    });
+                } else {
+                    addToCart(productId, quantity, type);
+                }
+            }
+        });
+    }
+
+    // Fungsi untuk menambahkan ke keranjang
+    function addToCart(productId, quantity, type, rentPeriod = null) {
+        fetch(`/cart/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                quantity: parseInt(quantity),
+                type: type,
+                rent_period: rentPeriod
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = '/cart';
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: data.message || 'Terjadi kesalahan'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Terjadi kesalahan saat menambahkan ke keranjang'
+            });
+        });
     }
 
     // Fungsi filter
@@ -129,15 +250,6 @@
                     Cari
                 </button>
             </form>
-            <div class="w-48">
-                <select id="sort-select" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary">
-                    <option value="created_at-desc" {{ request('sort') == 'created_at' && request('order') == 'desc' ? 'selected' : '' }}>Terbaru</option>
-                    <option value="price-asc" {{ request('sort') == 'price' && request('order') == 'asc' ? 'selected' : '' }}>Harga: Rendah ke Tinggi</option>
-                    <option value="price-desc" {{ request('sort') == 'price' && request('order') == 'desc' ? 'selected' : '' }}>Harga: Tinggi ke Rendah</option>
-                    <option value="name-asc" {{ request('sort') == 'name' && request('order') == 'asc' ? 'selected' : '' }}>Nama: A-Z</option>
-                    <option value="name-desc" {{ request('sort') == 'name' && request('order') == 'desc' ? 'selected' : '' }}>Nama: Z-A</option>
-                </select>
-            </div>
         </div>
         
         <!-- Filter -->

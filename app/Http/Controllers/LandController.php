@@ -46,8 +46,25 @@ class LandController extends Controller
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'area' => 'required|numeric|min:0.1',
-            'device_id' => 'required|string|max:255|unique:lands'
+            'device_id' => 'required|string|max:255'
         ]);
+
+        // Validasi kustom untuk device_id
+        $orderItem = \App\Models\OrderItem::where('device_id', $validated['device_id'])
+                                            ->whereHas('order', function($query) {
+                                                $query->where('user_id', Auth::id());
+                                            })
+                                            ->first();
+
+        if (!$orderItem) {
+            return redirect()->back()->withErrors(['device_id' => 'Device ID tidak valid atau tidak terdaftar di akun Anda.'])->withInput();
+        }
+        
+        // Cek apakah device_id sudah digunakan oleh lahan lain
+        $existingLand = Land::where('device_id', $validated['device_id'])->first();
+        if ($existingLand) {
+            return redirect()->back()->withErrors(['device_id' => 'Device ID ini sudah digunakan untuk lahan lain.'])->withInput();
+        }
 
         $land = Auth::user()->lands()->create($validated);
 

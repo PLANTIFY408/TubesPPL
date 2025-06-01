@@ -12,7 +12,35 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('profile', compact('user'));
+
+        // Muat relasi pesanan, item pesanan, dan produk
+        $user->load(['orders.orderItems.product']);
+
+        // Hitung jumlah alat yang dibeli user
+        $totalTools = 0;
+        foreach ($user->orders as $order) {
+            // Hanya hitung dari pesanan yang sudah selesai (completed)
+            if ($order->status === 'completed') {
+                foreach ($order->orderItems as $item) {
+                    // Hitung jika kategori produk mengandung kata 'alat' (case-insensitive)
+                    if ($item->product && stripos($item->product->category, 'alat') !== false) {
+                        $totalTools += $item->quantity;
+                    }
+                }
+            }
+        }
+
+        // Hitung jumlah ahli unik yang pernah diajak chat
+        $chattedExpertsCount = \App\Models\Chat::where('sender_id', $user->id)
+                                          ->orWhere('receiver_id', $user->id)
+                                          ->get()
+                                          ->map(function ($chat) use ($user) {
+                                              return $chat->sender_id === $user->id ? $chat->receiver_id : $chat->sender_id;
+                                          })
+                                          ->unique()
+                                          ->count();
+
+        return view('profile', compact('user', 'totalTools', 'chattedExpertsCount'));
     }
 
     public function update(Request $request)

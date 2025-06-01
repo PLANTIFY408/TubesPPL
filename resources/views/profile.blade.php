@@ -84,15 +84,19 @@
                             <div class="text-sm text-gray-500">Lahan Aktif</div>
                         </div>
                         <div class="text-center p-3 bg-gray-50 rounded-lg">
-                            <div class="text-3xl font-bold text-primary">{{ $user->lands()->sum('device_id') ? 1 : 0 }}</div>
-                            <div class="text-sm text-gray-500">Perangkat</div>
+                            <div class="text-3xl font-bold text-primary">{{ $totalTools }}</div>
+                            <div class="text-sm text-gray-500">Alat Dimiliki</div>
                         </div>
                         <div class="text-center p-3 bg-gray-50 rounded-lg">
-                            <div class="text-3xl font-bold text-primary">0</div>
+                            <div class="text-3xl font-bold text-primary">{{ $chattedExpertsCount }}</div>
                             <div class="text-sm text-gray-500">Konsultasi</div>
                         </div>
                         <div class="text-center p-3 bg-gray-50 rounded-lg">
-                            <div class="text-3xl font-bold text-primary">0</div>
+                            <div class="text-3xl font-bold text-primary">
+                                {{ $user->orders()->where('status', '!=', 'cancelled')->with('orderItems')->get()->sum(function($order) {
+                                    return $order->orderItems->sum('quantity');
+                                }) }}
+                            </div>
                             <div class="text-sm text-gray-500">Produk Dibeli</div>
                         </div>
                     </div>
@@ -110,17 +114,9 @@
                             <i class="fas fa-chart-line text-primary mr-3"></i>
                             <span>Lihat Dashboard</span>
                         </a>
-                        <a href="#" class="flex items-center text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+                        <a href="{{ route('orders.index') }}" class="flex items-center text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
                             <i class="fas fa-history text-primary mr-3"></i>
                             <span>Riwayat Transaksi</span>
-                        </a>
-                        <a href="#" class="flex items-center text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
-                            <i class="fas fa-bell text-primary mr-3"></i>
-                            <span>Notifikasi</span>
-                        </a>
-                        <a href="#" class="flex items-center text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
-                            <i class="fas fa-cog text-primary mr-3"></i>
-                            <span>Pengaturan</span>
                         </a>
                         <form action="{{ route('logout') }}" method="POST" class="w-full">
                             @csrf

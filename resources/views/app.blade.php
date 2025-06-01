@@ -65,12 +65,20 @@
                             <img src="{{ asset('images/plantify_logo-shadow.png') }}" alt="Plantify Logo" class="h-8">
                         </div>
                         <div class="hidden md:ml-6 md:flex md:space-x-8">
-                            <a href="{{ route('home') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="home-page">Beranda</a>
-                            <a href="{{ route('products.index') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="products-page">Produk</a>
-                            @auth
-                                <a href="{{ route('monitoring') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="monitoring-page">Monitoring</a>
-                                <a href="{{ route('consultation') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="consultation-page">Konsultasi</a>
-                            @endauth
+                            @if(auth()->check() && auth()->user()->role === 'admin')
+                                <a href="{{ route('admin.users.index') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Manajemen User</a>
+                                <a href="{{ route('admin.products.index') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Manajemen Produk</a>
+                                <a href="{{ route('admin.orders.index') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Manajemen Pesanan</a>
+                            @elseif(auth()->check() && auth()->user()->role === 'ahli')
+                                <a href="{{ route('consultation.index') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">Chat Konsultasi</a>
+                            @else
+                                <a href="{{ route('home') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="home-page">Beranda</a>
+                                <a href="{{ route('products.index') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="products-page">Produk</a>
+                                @auth
+                                    <a href="{{ route('monitoring') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="monitoring-page">Monitoring</a>
+                                    <a href="{{ route('consultation.index') }}" class="nav-item text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" data-target="consultation-page">Konsultasi</a>
+                                @endauth
+                            @endif
                         </div>
                     </div>
                     <div class="flex items-center">
@@ -81,6 +89,19 @@
                             </div>
                         @else
                             <div id="user-profile-btn" class="flex items-center space-x-4">
+                                @if(auth()->check() && auth()->user()->role === 'user')
+                                    <a href="{{ route('cart.index') }}" class="relative text-gray-600 hover:text-primary">
+                                        <i class="fas fa-shopping-cart text-s"></i>
+                                        @if(Auth::user()->carts()->count() > 0)
+                                            <span class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                                {{ Auth::user()->carts()->count() }}
+                                            </span>
+                                        @endif
+                                    </a>
+                                    <a href="{{ route('orders.index') }}" class="text-gray-600 hover:text-primary">
+                                        <i class="fas fa-history text-s"></i>
+                                    </a>
+                                @endif
                                 <div class="relative">
                                     <a href="{{ route('profile') }}" class="flex items-center focus:outline-none">
                                         <img class="h-8 w-8 rounded-full border-2 border-primary" src="{{ asset('storage/' . (Auth::user()->profile_photo_path ?? 'no-image.png')) }}" alt="Profile">
@@ -105,13 +126,26 @@
             <!-- Mobile menu -->
             <div id="mobile-menu" class="md:hidden hidden animate-fade-in">
                 <div class="px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg">
-                    <a href="{{ route('home') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Beranda</a>
-                    <a href="{{ route('products.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Produk</a>
-                    @auth
-                        <a href="{{ route('monitoring') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Monitoring</a>
-                        <a href="{{ route('consultation') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium" >Konsultasi</a>
-                        <a href="{{ route('profile') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium" >Profil</a>
-                    @endauth
+                    @if(auth()->check() && auth()->user()->role === 'admin')
+                        <a href="{{ route('admin.users.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Manajemen User</a>
+                        <a href="{{ route('admin.products.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Manajemen Produk</a>
+                        <a href="{{ route('admin.orders.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Manajemen Pesanan</a>
+                    @elseif(auth()->check() && auth()->user()->role === 'ahli')
+                         <a href="{{ route('consultation.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Chat Konsultasi</a>
+                    @else
+                        <a href="{{ route('home') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Beranda</a>
+                        <a href="{{ route('products.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Produk</a>
+                        @auth
+                            @if(auth()->check() && auth()->user()->role === 'user')
+                                <a href="{{ route('monitoring') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Monitoring</a>
+                                <a href="{{ route('consultation.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Konsultasi</a>
+                                <a href="{{ route('orders.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">
+                                    <i class="fas fa-history mr-2"></i>Riwayat Transaksi
+                                </a>
+                            @endif
+                            <a href="{{ route('profile') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Profil</a>
+                        @endauth
+                    @endif
                 </div>
             </div>
         </nav>
@@ -187,5 +221,8 @@
             </div>
         </footer>
     </div>
+
+    @yield('scripts')
+    @stack('scripts')
 </body>
 </html>
