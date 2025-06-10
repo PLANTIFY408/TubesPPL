@@ -83,12 +83,12 @@
                     </div>
                     <div class="flex items-center">
                         @guest
-                            <div id="auth-buttons" class="flex space-x-2">
+                            <div id="auth-buttons" class="hidden md:flex space-x-2">
                                 <a href="{{ route('login') }}" class="bg-transparent hover:bg-primary-light text-primary hover:text-white border border-primary hover:border-transparent rounded-md px-3 py-1 text-sm transition-colors">Masuk</a>
                                 <a href="{{ route('register') }}" class="bg-primary hover:bg-primary-dark text-white rounded-md px-3 py-1 text-sm transition-colors">Daftar</a>
                             </div>
                         @else
-                            <div id="user-profile-btn" class="flex items-center space-x-4">
+                            <div id="user-profile-btn" class="hidden md:flex items-center space-x-4">
                                 @if(auth()->check() && auth()->user()->role === 'user')
                                     <a href="{{ route('cart.index') }}" class="relative text-gray-600 hover:text-primary">
                                         <i class="fas fa-shopping-cart text-s"></i>
@@ -115,7 +115,7 @@
                             </div>
                         @endguest
                         <div class="ml-4 md:hidden flex items-center">
-                            <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-primary">
+                            <button id="mobile-menu-button" class="text-gray-500 hover:text-primary">
                                 <i class="fas fa-bars text-xl"></i>
                             </button>
                         </div>
@@ -135,16 +135,24 @@
                     @else
                         <a href="{{ route('home') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Beranda</a>
                         <a href="{{ route('products.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Produk</a>
-                        @auth
+
+                        @guest
+                            <a href="{{ route('login') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Masuk</a>
+                            <a href="{{ route('register') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Daftar</a>
+                        @else {{-- Authenticated user (not admin/ahli) --}}
                             @if(auth()->check() && auth()->user()->role === 'user')
                                 <a href="{{ route('monitoring') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Monitoring</a>
                                 <a href="{{ route('consultation.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Konsultasi</a>
                                 <a href="{{ route('orders.index') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">
-                                    <i class="fas fa-history mr-2"></i>Riwayat Transaksi
+                                    Riwayat Transaksi
                                 </a>
                             @endif
                             <a href="{{ route('profile') }}" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Profil</a>
-                        @endauth
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="nav-item block text-gray-600 hover:text-primary px-3 py-2 rounded-md text-base font-medium">Keluar</button>
+                            </form>
+                        @endguest
                     @endif
                 </div>
             </div>
@@ -224,5 +232,17 @@
 
     @yield('scripts')
     @stack('scripts')
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            mobileMenuButton.addEventListener('click', toggleMobileMenu);
+        });
+    </script>
 </body>
 </html>

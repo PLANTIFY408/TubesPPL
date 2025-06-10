@@ -34,8 +34,8 @@
                     <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white">Solusi Pertanian Modern untuk Hasil Panen Optimal</h1>
                     <p class="mt-4 text-lg text-green-100">Plantify membantu Anda mengelola lahan pertanian dengan teknologi monitoring realtime, konsultasi ahli, dan akses ke produk pertanian berkualitas.</p>
                     <div class="mt-8 flex space-x-4">
-                        <button onclick="showPage('products-page')" class="bg-white text-primary hover:bg-gray-100 font-bold py-2 px-6 rounded-lg transition-colors">Lihat Produk</button>
-                        <button onclick="showPage('monitoring-page')" class="border-2 border-white text-white hover:bg-white hover:text-primary font-bold py-2 px-6 rounded-lg transition-colors">Mulai Monitoring</button>
+                        <a href="{{ route('products.index') }}" class="bg-white text-primary hover:bg-gray-100 font-bold py-2 px-6 rounded-lg transition-colors">Lihat Produk</a>
+                        <a href="{{ route('monitoring') }}" class="border-2 border-white text-white hover:bg-white hover:text-primary font-bold py-2 px-6 rounded-lg transition-colors">Mulai Monitoring</a>
                     </div>
                 </div>
             </div>
@@ -57,10 +57,10 @@
                 </div>
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">Monitoring Realtime</h3>
                 <p class="text-gray-600">Pantau kondisi lahan Anda kapan saja dan di mana saja dengan data pH dan kelembapan tanah secara realtime.</p>
-                <button onclick="showPage('monitoring-page')" class="mt-4 text-primary hover:text-primary-dark flex items-center">
+                <a href="{{ route('monitoring') }}" class="mt-4 text-primary hover:text-primary-dark flex items-center">
                     <span>Mulai Monitoring</span>
                     <i class="fas fa-arrow-right ml-2"></i>
-                </button>
+                </a>
             </div>
 
             <!-- Feature 2 -->
@@ -70,10 +70,10 @@
                 </div>
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">Produk Berkualitas</h3>
                 <p class="text-gray-600">Dapatkan akses ke produk pertanian berkualitas tinggi, baik untuk dibeli maupun disewa sesuai kebutuhan Anda.</p>
-                <button onclick="showPage('products-page')" class="mt-4 text-primary hover:text-primary-dark flex items-center">
+                <a href="{{ route('products.index') }}" class="mt-4 text-primary hover:text-primary-dark flex items-center">
                     <span>Lihat Produk</span>
                     <i class="fas fa-arrow-right ml-2"></i>
-                </button>
+                </a>
             </div>
 
             <!-- Feature 3 -->
@@ -83,10 +83,10 @@
                 </div>
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">Konsultasi Ahli</h3>
                 <p class="text-gray-600">Konsultasikan masalah pertanian Anda langsung dengan para ahli tanaman yang berpengalaman di bidangnya.</p>
-                <button onclick="showPage('consultation-page')" class="mt-4 text-primary hover:text-primary-dark flex items-center">
+                <a href="{{ route('consultation.index') }}" class="mt-4 text-primary hover:text-primary-dark flex items-center">
                     <span>Konsultasi Sekarang</span>
                     <i class="fas fa-arrow-right ml-2"></i>
-                </button>
+                </a>
             </div>
         </div>
     </div>
